@@ -22,6 +22,7 @@ User Function xReadError()
     Private nNovo := 0
     Private lCustomizado := .F.
     Private lErro := .F.
+    Private cErro := Space(200)
 
     /* Montagem da tela de parâmetro para seleção do arquivo de erro */
     AADD(aParamBox,{6,"Arquivo ?",Space(70),"","","",70,.T.,"Todos os arquivo (*.*)|*.*"})
@@ -185,7 +186,7 @@ Static Function CutLines(nOpc)
             Else
                 cDataFonte := "Sem data"
             Endif
-            cErro := Substr(StrTran(aCutError[1],"'"," "),0,100) //Grava o erro
+            cErro := StrTran(aCutError[1],"'"," ") //Grava o erro
         Else
             aAux := StrTokArr(aCutError2[2],"(") //Separa a função que deu o erro
             aAux := StrTokArr(aAux[1],")") //Separa a função que deu o erro
@@ -287,6 +288,13 @@ Static Function GrvTable()
 
     Local cQuery := "" //Variavel que conterá a query de execução do LOG_BANC
     Local lOk := .F.
+    Local nSpace := Len(cErro)
+    Local nSoma := 0
+
+    While nSpace != 200
+        nSoma ++
+        nSpace ++
+    Enddo
 
     ProcRegua(RecCount())
     LOG->(DbGoTop())
@@ -294,7 +302,7 @@ Static Function GrvTable()
 
     While LOG->(!Eof())
         IncProc()
-        If LOG->(DbSeek(xFilial()+Substr(cErro,0,200)+cFunc)) //Verifica se o erro já existe na base de dados
+        If LOG->(DbSeek(xFilial()+cErro + Space(nSoma)+cFunc)) //Verifica se o erro já existe na base de dados
             lOk := .T.
             If !Empty(LOG->LOG_SOL) .OR. !Empty(LOG->LOG_REFARQ) //Se já existir uma soluçao
                 Iif(!Empty(LOG->LOG_SOL),EECVIEW(LOG->LOG_SOL,"Solucao"),EECVIEW(LOG->LOG_SOL,"Referencia Arquivo")) //Se existir solução. apresenta ela na tela

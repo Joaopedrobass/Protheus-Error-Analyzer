@@ -8,22 +8,22 @@ User Function Anexo()
     Private aRet := {}
 
     If !Empty(LOG->LOG_REFARQ)
-        If MsgYesNo("J· existe arquivos para este erro, Deseja visualiza-los ?","AtenÁ„o")
+        If MsgYesNo("J√° existe arquivos para este erro, Deseja visualiza-los ?","Aten√ß√£o")
             BuscaArq(LOG->LOG_REFARQ)
             Return .T.
         Endif
     Endif
 
-    /* Montagem da tela de par‚metro para seleÁ„o do arquivo de erro */
+    /* Montagem da tela de par√¢metro para sele√ß√£o do arquivo de erro */
     AADD(aParamBox,{6,"Arquivo ?",Space(70),"","","",70,.T.,"Todos os arquivo (*.*)|*.*"})
 
     If ParamBox(aParamBox,"Selecione o arquivo",aRet)
         cFile := aRet[1]
         If !":" $ Upper(cFile)
-            MsgInfo("Para anexar o arquivo È necess·rio informar um diretÛrio local","AtenÁ„o")
+            MsgInfo("Para anexar o arquivo √© necess√°rio informar um diret√≥rio local","Aten√ß√£o")
             U_Anexo()
         Endif
-        Processa({||VerPasta(cFile)},"Aguarde...","Verificando pasta...",.F.) //FunÁ„o que ir· ler linha por linha do error.log
+        Processa({||VerPasta(cFile)},"Aguarde...","Verificando pasta...",.F.) //Fun√ß√£o que ir√° ler linha por linha do error.log
     Endif
 
 Return
@@ -54,7 +54,7 @@ Static Function VerPasta(cFile)
         cPasta := cDirStart + cValToChar(nCount)
         lRet := MakeDir(cPasta)
         If lRet != 0
-            MsgInfo("N„o foi possÌvel criar a pasta no servidor. Erro: " + Str(FError()) ,"AtenÁ„o")
+            MsgInfo("N√£o foi poss√≠vel criar a pasta no servidor. Erro: " + Str(FError()) ,"Aten√ß√£o")
             Return .F.
         Endif
     Endif
@@ -64,7 +64,7 @@ Static Function VerPasta(cFile)
     If !File(Iif(Empty(cPasta),cDirStart,cPasta) + "\" + Alltrim(aArq[Len(aArq)]) )
         If !CpyT2S(cFile,Iif(Empty(cPasta),cDirStart,cPasta + "\"))
             IncProc()
-            MsgInfo("N„o foi possÌvel copiar arquivo para o servidor", "AtenÁ„o")
+            MsgInfo("N√£o foi poss√≠vel copiar arquivo para o servidor", "Aten√ß√£o")
             Return .F.
         Endif
     Endif
@@ -74,7 +74,7 @@ Static Function VerPasta(cFile)
     If !".zip" $ cFile
         If FZip(Iif(Empty(cPasta),cDirStart,cPasta) + "\"+ cValToChar(nCount) + ".zip", aFiles) != 0
             IncProc()
-            MsgInfo("N„o foi possÌvel zipar o arquivo no servidor","AtenÁ„o")
+            MsgInfo("N√£o foi poss√≠vel zipar o arquivo no servidor","Aten√ß√£o")
             Return .F.
         Endif
     Endif
@@ -87,11 +87,11 @@ Static Function VerPasta(cFile)
         nRet := FErase(Iif(Empty(cPasta),cDirStart,cPasta) + "\" + Alltrim(aArq[Len(aArq)]))
 
         If nRet < 0 
-            MsgInfo("N„o foi possÌvel excluir o arquivo " + FError(),"AtenÁ„o")
+            MsgInfo("N√£o foi poss√≠vel excluir o arquivo " + FError(),"Aten√ß√£o")
         Endif
     Endif
 
-    If MsgYesNo("Deseja excluir o arquivo do computador ?", "AtenÁ„o")
+    If MsgYesNo("Deseja excluir o arquivo do computador ?", "Aten√ß√£o")
         FErase(cFile)
     Endif
     
